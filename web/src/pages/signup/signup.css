@@ -1,0 +1,99 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.signUpContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    flex-direction: column;
+}
+
+.signUpContainer>form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid white;
+    padding: 2em;
+    border-radius: 10px;
+    background-color: transparent;
+    backdrop-filter: blur(10px);
+}
+.signUpContainer form h1{
+    color: white;
+    width: 100%;
+    text-align: center;
+}
+.signUpContainer form input{
+    padding: 5px;
+    font-size: 1em;
+    color: white;
+    width: 17em;
+    border: none;
+    border-bottom: 2px solid white;
+    background-color: transparent;
+
+}
+.signUpContainer > div{
+    width: 100%;
+    height: 35px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+.signUpContainer form button{
+    padding: 10px;
+    width: 100%;
+    border: 1px solid white;
+    border-radius: 5px;
+    font-weight: bold;
+    color: white;
+    background-color: transparent;
+    backdrop-filter: blur(10px);
+    transition: 0.4s ease ;
+    cursor: pointer;
+
+}
+.signUpContainer form button:hover{
+    border: 1px solid white;
+    border-radius: 5px;
+    font-weight: bold;
+    color: black;
+    background-color: white;
+    backdrop-filter: blur(10px);
+
+}
+
+.signUpContainer form > p{
+    color: white;
+    align-self: flex-start;
+    font-weight: lighter;
+}
+.loginLink{
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
+
+
+
+/* utility class  */
+.Error {
+    font-size: 0.7rem;
+    font-weight: bold;
+    color: red;
+}
+.Alert {
+    font-size: 0.7rem;
+    font-weight: bold;
+    color: green;
+}
+
+.hidden {
+    visibility: hidden;
+}

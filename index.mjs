@@ -15,8 +15,7 @@ app.use(cookieParser()) // cookie parser
 app.use(cors())  
 
 
-// app.use('/api/v1', authRouter);
-app.use(express.static(path.join(__dirname)))
+app.use('/api/v1', authRouter);
 
 app.use((req, res, next) => {
     console.log("req.cookie: ", req.cookies);
@@ -38,6 +37,8 @@ app.use((req, res, next) => {
         });
     }
 })
+
+app.use(express.static(path.join(__dirname)))
 
 // dummy Api
 app.post('/api/v1/test', (req, res, next) => { //secure api only access after token validation

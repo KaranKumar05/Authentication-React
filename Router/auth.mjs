@@ -65,7 +65,8 @@ router.post('/login', async (req, res, next) => {
 
 router.post('/signup', async (req, res, next) => {
     if ( 
-        !req.body?.username
+        !req.body?.firstName
+        ||!req.body?.lastName
         || !req.body?.email
         || !req.body?.password
     ) {
@@ -73,9 +74,10 @@ router.post('/signup', async (req, res, next) => {
             `Required Parameters Missing
                 Please Fill All the Fields
                 
-                username : "xyz",
+                firstName : "xyz",
+                lastName : "abc",
                 email : "abc@gmail.com",
-                Password: "Password"`
+                password: "Password"`
         );
         return;
     }
@@ -89,10 +91,11 @@ router.post('/signup', async (req, res, next) => {
         if (!result) {
             const passwordHash = await stringToHash(req.body.password) 
             const insertResponse = await userCollection.insertOne({
-                username: req.body.username,
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
                 email: req.body.email,
                 password: passwordHash,
-                CreatedOn: new Date
+                CreatedOn: new Date()
             });
             console.log(`Insert Response: ${insertResponse}`);
             res.send({
@@ -100,7 +103,7 @@ router.post('/signup', async (req, res, next) => {
             })
         } else {
             res.status(403).send({
-                message: "The Email is Already Registered"
+                message: "User Already Exist"
             });
         }
     } catch (err) {
