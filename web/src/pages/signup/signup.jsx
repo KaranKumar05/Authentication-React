@@ -30,7 +30,6 @@ const SignUp = () => {
   //-----Sign up Function-----//
   const signUpFunctionHandler = async (e) => {
     e.preventDefault();
-    console.log("Function is Running");
 
     //-----Checking if the passwords and Confirm Password matched-----//
     if (
@@ -64,6 +63,7 @@ const SignUp = () => {
         <h1>Sign Up</h1>
         <span>
           <input
+            autoComplete="given-name"
             ref={firstNameInputRef}
             type="text"
             placeholder="First Name"
@@ -72,6 +72,7 @@ const SignUp = () => {
         </span>
         <span>
           <input
+            autoComplete="family-name"
             ref={lastNameInputRef}
             type="text"
             placeholder="Last Name"
@@ -80,6 +81,7 @@ const SignUp = () => {
         </span>
         <span>
           <input
+            autoComplete="email"
             ref={emailInputRef}
             type="email"
             placeholder="Email"
@@ -88,6 +90,7 @@ const SignUp = () => {
         </span>
         <span>
           <input
+            autoComplete="new-password"
             ref={passwordInputRef}
             type="password"
             placeholder="Password"
@@ -96,6 +99,7 @@ const SignUp = () => {
         </span>
         <span>
           <input
+            autoComplete="new-password"
             ref={confirmPasswordInputRef}
             type="password"
             placeholder="Confirm Password"

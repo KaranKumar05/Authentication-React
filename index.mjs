@@ -1,52 +1,79 @@
 import express from 'express';
-import path from 'path';
 import cors from 'cors';
-import authRouter from './Router/auth.mjs'
-import 'dotenv/config' //Environment variable (process.env)
-import cookieParser from 'cookie-parser'
-import jwt from 'jsonwebtoken' // To verify JW token 
-
-
-
+import path from 'path';
 const __dirname = path.resolve();
+import 'dotenv/config';
+import cookieParser from 'cookie-parser'
+import jwt from 'jsonwebtoken';
+
+import { client } from './mongodb.mjs'
+import { ObjectId } from 'mongodb'
+
+const db = client.db("cruddb");
+const col = db.collection("posts");
+const userCollection = db.collection("users");
+
+
+import authRouter from './routes/auth.mjs'
+import postRouter from './routes/post.mjs'
+import commentRouter from './routes/comment.mjs'
+import feedRouter from './routes/feed.mjs'
+import unAuthProfileRouter from './unAuthRoutes/profile.mjs'
+
+
 const app = express();
 app.use(express.json()); // body parser
-app.use(cookieParser()) // cookie parser  
-app.use(cors())  
+app.use(cookieParser()); // cookie parser
+app.use(cors({
+    origin: ['http://localhost:3000'],
+    credentials: true
+}));
 
 
-app.use('/api/v1', authRouter);
+app.use("/api/v1", authRouter)
 
-app.use((req, res, next) => {
-    console.log("req.cookie: ", req.cookies);
+app.use("/api/v1", (req, res, next) => { // JWT
+    console.log("cookies: ", req.cookies);
 
     const token = req.cookies.token;
     try {
-        const decoded = jwt.verify(token, process.env.SECRET_KEY);
-        console.log(decoded);
+        const decoded = jwt.verify(token, process.env.SECRET);
+        console.log("decoded: ", decoded);
+
         req.body.decoded = {
             firstName: decoded.firstName,
             lastName: decoded.lastName,
             email: decoded.email,
-            isAdmin: decoded.isAdmin
-        }
+            isAdmin: decoded.isAdmin,
+            _id: decoded._id,
+        };
+
         next();
-    } catch (error) {
-        res.status(401).send({
-            message: 'Invalid Token'
-        });
+
+    } catch (err) {
+
+        unAuthProfileRouter(req, res)
+        return;
     }
 })
 
-app.use(express.static(path.join(__dirname)))
+app.use("/api/v1", postRouter) // Secure api
 
-// dummy Api
-app.post('/api/v1/test', (req, res, next) => { //secure api only access after token validation
-    res.send('Testing Api is Working');
+
+app.use("/api/v1/ping", (req, res) => {
+    res.send("OK");
 })
 
-const PORT = process.env.PORT;
-app.listen(PORT, () => {
-    console.log(`App is Running On Port: ${PORT}`);
 
+
+app.use('/', express.static(path.join(__dirname, 'web/build')))
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname + '/web/build/index.html'))
+    // res.redirect('/');
+})
+
+
+const PORT = process.env.PORT || 5002;
+app.listen(PORT, () => {
+    console.log(`Example server listening on port ${PORT}`)
 })

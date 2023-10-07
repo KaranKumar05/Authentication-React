@@ -10,7 +10,10 @@
     justify-content: center;
     height: 100vh;
     flex-direction: column;
+    background-color: rgb(3, 2, 40);
+
 }
+
 
 .signUpContainer>form {
     display: flex;
